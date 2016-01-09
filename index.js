@@ -14,21 +14,68 @@ function HttpAccessory(log, config) {
 	this.url = config["statedevice_url"];
 	this.service = config["service"];
 	this.name = config["name"];
+
 }
+
+/*
+// The value property of SecuritySystemCurrentState must be one of the following:
+Characteristic.SecuritySystemCurrentState.STAY_ARM = 0;
+Characteristic.SecuritySystemCurrentState.AWAY_ARM = 1;
+Characteristic.SecuritySystemCurrentState.NIGHT_ARM = 2;
+Characteristic.SecuritySystemCurrentState.DISARMED = 3;
+Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED = 4;
+// The value property of SecuritySystemTargetState must be one of the following:
+Characteristic.SecuritySystemTargetState.STAY_ARM = 0;
+Characteristic.SecuritySystemTargetState.AWAY_ARM = 1;
+Characteristic.SecuritySystemTargetState.NIGHT_ARM = 2;
+Characteristic.SecuritySystemTargetState.DISARM = 3;
+*/
 
 HttpAccessory.prototype = {
   	getState: function(callback) {
-    console.log(this.name, " triggered");
-    superagent.get(this.url).then(function(response){
-		const body = response.body;
-		// console.log("body", body);
-		const sensordata = body.data.last_data.DA;
-		console.log(this.name, " data: ", sensordata);
-		callback(null,sensordata);
-	});
-  },
+    	console.log(this.name, "getState triggered");
+    	superagent.get(this.url).then(function(response){
+			const body = response.body;
+			// console.log("body", body);
+			const sensordata = body.data.last_data.DA;
+			console.log("Security System getState data:", sensordata);
+			// callback(null,sensordata);
+			if (sensordata == 'stay armed'){
+				console.log("Security System stay armed");
+				callback(null,0)
+				} else if(sensordata == 'away armed')
+				{
+				console.log("Security System away armed");
+				callback(null,1)	
+				}else if(sensordata == 'night armed')
+				{
+				console.log("Security System night armed");
+				callback(null,2)	
+				}else if(sensordata == 'alarm triggered')
+				{
+				console.log("Security System disarmed");
+				callback(null,3)	
+				} else {
+				console.log("Security System alarm triggered");
+				callback(null,4)	
+				} 
 
-  identify: function(callback) {
+		});
+	},
+	setState: function(state, callback) {
+		console.log(this.name, "setState triggered with", state);
+		// need code here. this is not actually working
+    	superagent.get(this.url).then(function(response){
+			const body = response.body;
+			// console.log("body", body);
+			// const sensordata = body.data.last_data.DA;
+			//console.log(this.name, " data: ", sensordata);
+			// callback(null,sensordata);
+			callback(null,3);
+		});    	
+  	},
+
+  	identify: function(callback) {
 		this.log("Security System: Identify requested!");
 		callback();
 	},
@@ -38,14 +85,17 @@ HttpAccessory.prototype = {
 		    informationService
       			.setCharacteristic(Characteristic.Manufacturer, "NinjaBlocks")
 				.setCharacteristic(Characteristic.Model, "NinjaBlock")
-				.setCharacteristic(Characteristic.SerialNumber, "n/a")
-		if (this.service == "Security System") {
-      			Service = new Service.SecuritySystem(this.name);
-				Service
-			        .getCharacteristic(Characteristic.SecuritySystemCurrentState)
-			        .on('get', this.getState.bind(this));
+				.setCharacteristic(Characteristic.SerialNumber, "0.1.5")
+		  	SecurityService = new Service.SecuritySystem(this.name);
+			SecurityService
+			    .getCharacteristic(Characteristic.SecuritySystemCurrentState)
+			    .on('get', this.getState.bind(this));
 
-	return [informationService, Service];
-		}
+			SecurityService
+    			.getCharacteristic(Characteristic.SecuritySystemTargetState)
+    			.on('get', this.getState.bind(this))
+    			.on('set', this.setState.bind(this));
+
+		return [informationService, SecurityService];
 	}
 };
