@@ -85,7 +85,7 @@ HttpAccessory.prototype = {
 		    informationService
       			.setCharacteristic(Characteristic.Manufacturer, "NinjaBlocks")
 				.setCharacteristic(Characteristic.Model, "NinjaBlock")
-				.setCharacteristic(Characteristic.SerialNumber, "0.1.5")
+				.setCharacteristic(Characteristic.SerialNumber, "0.1.6")
 		  	SecurityService = new Service.SecuritySystem(this.name);
 			SecurityService
 			    .getCharacteristic(Characteristic.SecuritySystemCurrentState)
