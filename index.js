@@ -51,7 +51,7 @@ HttpAccessory.prototype = {
 				{
 				console.log("Security System night armed");
 				callback(null,2)	
-				}else if(sensordata == 'alarm triggered')
+				}else if(sensordata == 'disarmed')
 				{
 				console.log("Security System disarmed");
 				callback(null,3)	
