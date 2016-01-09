@@ -12,8 +12,8 @@
 
 Enable the States Service in Settings: Services if you haven't already.
 You'll see a new Widget on your Dashboard, called 'Generic State Device'.
-Use the cog (Widget Menu) and add a new Custom State. Name it 'Alarm enabled'.
-Do this again, name the state 'Alarm disabled'.
+Use the cog (Widget Menu) and add a new Custom State. Name it 'stay armed'.
+Do this again, name the state 'disarmed'. Other states supported: 'alarm triggered', 'away armed' and 'night armed'
 
 # Configuration of the plugin
 
@@ -34,4 +34,3 @@ Fields:
 *   Example: https://a.ninja.is/rest/v0/device/4412BB000300_0101_0_30?user_access_token=abc123"
 * "service": Must always be "Security System" (required)
 * "name": Can be anything but is required and will be picked by SIRI as the name of your accessory.
-
