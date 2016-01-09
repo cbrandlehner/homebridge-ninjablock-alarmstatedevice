@@ -1,6 +1,6 @@
 {
   "name": "homebridge-ninjablock-alarmstatedevice",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Homebridge module to retrieve the current state of the state-device if configured as alarm enabled or disabled",
   "main": "index.js",
   "scripts": {
