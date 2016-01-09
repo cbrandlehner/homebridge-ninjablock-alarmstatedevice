@@ -42,7 +42,7 @@ HttpAccessory.prototype = {
 		if (this.service == "Security System") {
       			Service = new Service.SecuritySystem(this.name);
 				Service
-			        .getCharacteristic(Characteristic.SecuritySystemTargetState)
+			        .getCharacteristic(Characteristic.SecuritySystemCurrentState)
 			        .on('get', this.getState.bind(this));
 
 	return [informationService, Service];
