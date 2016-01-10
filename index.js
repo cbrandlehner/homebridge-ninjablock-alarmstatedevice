@@ -64,14 +64,25 @@ HttpAccessory.prototype = {
 	},
 	setState: function(state, callback) {
 		console.log(this.name, "setState triggered with", state);
-		// need code here. this is not actually working
-    	superagent.get(this.url).then(function(response){
-			const body = response.body;
-			// console.log("body", body);
-			// const sensordata = body.data.last_data.DA;
-			//console.log(this.name, " data: ", sensordata);
-			// callback(null,sensordata);
-			callback(null,3);
+		var SecuritySystemTargetState;
+		if (state=='0'){
+			SecuritySystemTargetState = '{"DA":"stay armed"}'
+		} else if (state=='1'){
+			SecuritySystemTargetState = '{"DA":"away armed"}'
+		} else if (state=='2'){
+			SecuritySystemTargetState = '{"DA":"night armed"}'
+		} else {
+			SecuritySystemTargetState = '{"DA":"disarmed"}'
+		}
+		console.log('setting state device to:',SecuritySystemTargetState);
+		superagent
+    		.put(this.url)
+    			.set('Content-Type', 'application/json')
+    			.send(SecuritySystemTargetState)
+    			.then(function(response){
+					const body = response.body;
+					console.log("setState server response:", body);
+					callback(null,null);
 		});    	
   	},
 
@@ -85,7 +96,7 @@ HttpAccessory.prototype = {
 		    informationService
       			.setCharacteristic(Characteristic.Manufacturer, "NinjaBlocks")
 				.setCharacteristic(Characteristic.Model, "NinjaBlock")
-				.setCharacteristic(Characteristic.SerialNumber, "0.1.6")
+				.setCharacteristic(Characteristic.SerialNumber, "0.1.7")
 		  	SecurityService = new Service.SecuritySystem(this.name);
 			SecurityService
 			    .getCharacteristic(Characteristic.SecuritySystemCurrentState)
