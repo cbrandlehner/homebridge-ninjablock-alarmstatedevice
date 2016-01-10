@@ -13,7 +13,7 @@
 Enable the States Service in Settings: Services if you haven't already.
 You'll see a new Widget on your Dashboard, called 'Generic State Device'.
 Use the cog (Widget Menu) and add a new Custom State. Name it 'stay armed'.
-Do this again, name the state 'disarmed'. Other states supported: 'alarm triggered', 'away armed' and 'night armed'
+Do this again for: 'disarmed', 'alarm triggered', 'away armed' and 'night armed'
 
 # Configuration of the plugin
 
